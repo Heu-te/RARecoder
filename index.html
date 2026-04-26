@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RA Recorder - 勤怠管理</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <i class="ph ph-clock-user"></i>
+                <h1>RA Recorder</h1>
+            </div>
+            <button id="settings-btn" class="icon-btn" title="設定" aria-label="設定">
+                <i class="ph ph-gear"></i>
+            </button>
+        </header>
+
+        <main>
+            <!-- 勤怠入力セクション -->
+            <section class="card">
+                <h2><i class="ph ph-pencil-simple"></i> 勤怠入力</h2>
+                <form id="record-form">
+                    <div class="form-group">
+                        <label for="date">勤務日</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="start-time">開始時間</label>
+                            <input type="time" id="start-time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="end-time">終了時間</label>
+                            <input type="time" id="end-time" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="break-time">休憩時間 (HH:MM)</label>
+                        <input type="time" id="break-time" value="01:00" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="work-content">業務内容</label>
+                        <input type="text" id="work-content" placeholder="例: 損失関数改善" required>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button type="submit" class="btn btn-primary" id="save-btn" style="flex: 1;">
+                            <i class="ph ph-check-circle"></i> 保存＆生成
+                        </button>
+                        <button type="button" class="btn btn-danger" id="delete-btn" style="flex: 0 0 auto;">
+                            <i class="ph ph-trash"></i> 削除
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 生成結果セクション -->
+            <section class="card result-card" id="result-section" style="display: none;">
+                <div class="result-header">
+                    <h2><i class="ph ph-copy"></i> コピー用テキスト</h2>
+                    <button id="copy-btn" class="icon-btn btn-small" title="コピー">
+                        <i class="ph ph-copy-simple"></i>
+                    </button>
+                </div>
+                <div class="result-text" id="output-text"></div>
+            </section>
+
+            <!-- サマリーセクション -->
+            <section class="card summary-card">
+                <div class="summary-header">
+                    <h2><i class="ph ph-chart-bar"></i> 月次サマリー</h2>
+                    <input type="month" id="summary-month">
+                </div>
+                <div class="summary-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">累計勤務時間</span>
+                        <div class="stat-value"><span id="total-hours">0.0</span> <span class="unit">h</span></div>
+                    </div>
+                    <div class="stat-box highlight">
+                        <span class="stat-label">見込み給与</span>
+                        <div class="stat-value"><span class="unit">¥</span><span id="total-salary">0</span></div>
+                    </div>
+                </div>
+                <button id="sync-btn" class="btn btn-secondary btn-full">
+                    <i class="ph ph-arrows-clockwise"></i> データを同期（再読み込み）
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <!-- 設定モーダル -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>設定</h2>
+                <button id="close-settings" class="icon-btn"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="form-group">
+                <label for="setting-name">氏名</label>
+                <input type="text" id="setting-name" value="末次響">
+            </div>
+            <div class="form-group">
+                <label for="setting-affiliation">所属</label>
+                <input type="text" id="setting-affiliation" value="CREST">
+            </div>
+            <div class="form-group">
+                <label for="setting-hourly-wage">時給（円）</label>
+                <input type="number" id="setting-hourly-wage" value="1500" min="0">
+            </div>
+            <div class="form-group">
+                <label for="setting-gas-url">GAS デプロイURL</label>
+                <input type="url" id="setting-gas-url" placeholder="https://script.google.com/macros/s/...">
+                <small class="help-text">スプレッドシートと連携するためのURLです。</small>
+            </div>
+            <button id="save-settings-btn" class="btn btn-primary btn-full">保存して閉じる</button>
+        </div>
+    </div>
+
+    <!-- トースト通知 -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
