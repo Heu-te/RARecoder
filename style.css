@@ -339,7 +339,7 @@ input:focus {
 
 /* Modal */
 .modal {
-    display: none;
+    display: flex;
     position: fixed;
     top: 0;
     left: 0;
@@ -347,14 +347,21 @@ input:focus {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 100;
     justify-content: center;
     align-items: flex-end; /* Mobile friendly */
+    
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .modal.active {
-    display: flex;
-    animation: fadeIn 0.2s ease;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .modal-content {
@@ -363,8 +370,13 @@ input:focus {
     margin: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    
     transform: translateY(100%);
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
 }
 
 @media (min-width: 520px) {
@@ -373,8 +385,13 @@ input:focus {
     }
     .modal-content {
         border-radius: var(--radius-lg);
-        transform: translateY(20px);
-        animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    .modal.active .modal-content {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 }
 
@@ -411,20 +428,4 @@ input:focus {
 
 .toast.show {
     transform: translateX(-50%) translateY(0);
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-}
-
-@keyframes scaleUp {
-    from { transform: translateY(20px) scale(0.95); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
 }
