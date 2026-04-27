@@ -164,6 +164,17 @@ input:focus {
     box-shadow: 0 0 0 3px hsla(var(--primary-hue), 85%, 55%, 0.15);
 }
 
+input::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+}
+
+input[type="date"]:invalid,
+input[type="time"]:invalid,
+input[type="month"]:invalid {
+    color: var(--text-muted);
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;

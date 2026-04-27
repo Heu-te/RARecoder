@@ -118,8 +118,11 @@ async function handleSave(e) {
     // 日付フォーマットの変換 (YYYY-MM-DD -> YYYY/MM/DD)
     const formattedDate = date.replace(/-/g, '/');
 
-    // テキスト生成: 末次響 CREST 2026/04/23 11:30-20:00 R01:00 損失関数改善
-    const formattedText = `${state.settings.name} ${state.settings.affiliation} ${formattedDate} ${start}-${end} R${breakTime} ${content}`;
+    // テキスト生成: - 末次響 CREST 2026/04/23 11:30-20:00 R01:00 損失関数改善
+    const formattedText = `- ${state.settings.name}
+    - ${state.settings.affiliation} 
+    - ${formattedDate} ${start}-${end} R${breakTime} 
+    - ${content}`;
 
     // UIに表示
     document.getElementById('output-text').textContent = formattedText;
