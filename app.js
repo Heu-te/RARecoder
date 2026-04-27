@@ -30,6 +30,10 @@ function loadState() {
     // サマリーの月を今月に初期セット
     document.getElementById('summary-month').value = `${yyyy}-${mm}`;
 
+    // ブラウザのキャッシュ対策: 開始時間・終了時間を初期化
+    document.getElementById('start-time').value = '';
+    document.getElementById('end-time').value = '';
+
     updateSettingsUI();
     updateSummary();
 }
