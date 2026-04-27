@@ -171,7 +171,10 @@ input::placeholder {
 
 input[type="date"]:invalid,
 input[type="time"]:invalid,
-input[type="month"]:invalid {
+input[type="month"]:invalid,
+input[type="date"]:invalid::-webkit-datetime-edit,
+input[type="time"]:invalid::-webkit-datetime-edit,
+input[type="month"]:invalid::-webkit-datetime-edit {
     color: var(--text-muted);
 }
 
