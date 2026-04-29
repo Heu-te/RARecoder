@@ -18,20 +18,20 @@
 var ENABLE_EMAIL_NOTIFICATION = true;
 
 // 通知を受け取るメールアドレス（空欄の場合はスクリプト作成者のGmailアドレスに届きます）
-var NOTIFY_EMAIL = ""; 
+var NOTIFY_EMAIL = "";
 
 function sendNotification(type, details) {
   if (!ENABLE_EMAIL_NOTIFICATION) return;
-  
+
   try {
     var email = NOTIFY_EMAIL || Session.getEffectiveUser().getEmail();
     var subject = "【RA Recorder】" + type + "がありました";
     var body = "RA RecorderのGoogle Apps Scriptにアクセスがありました。\n\n" +
-               "【種類】: " + type + "\n" +
-               "【日時】: " + new Date().toLocaleString("ja-JP") + "\n\n" +
-               "【詳細情報】\n" + details + "\n\n" +
-               "※このメールはRA Recorderのセキュリティ通知機能によって自動送信されています。";
-               
+      "【種類】: " + type + "\n" +
+      "【日時】: " + new Date().toLocaleString("ja-JP") + "\n\n" +
+      "【詳細情報】\n" + details + "\n\n" +
+      "※このメールはRA Recorderのセキュリティ通知機能によって自動送信されています。";
+
     MailApp.sendEmail(email, subject, body);
   } catch (e) {
     // メール送信失敗時はエラーを出さない（メイン処理を止めないため）
@@ -67,19 +67,19 @@ function normalizeDateStr(rawDate) {
 function doPost(e) {
   var output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
-  
+
   try {
     var data = JSON.parse(e.postData.contents);
-    
+
     // データの日付（例: 2026-04-23）から「2026-04」を取り出してシート名にする
     var sheetName = String(data.date).substring(0, 7);
     var sheet = getOrCreateSheet(sheetName);
-    
+
     // シート上の日付データを取得
     var dates = sheet.getRange(1, 1, sheet.getLastRow() || 1, 1).getDisplayValues();
     var rowIndex = -1;
     var reqDate = normalizeDateStr(data.date);
-    
+
     // 同じ日付の行を探す
     for (var i = 0; i < dates.length; i++) {
       if (!dates[i][0]) continue;
@@ -89,7 +89,7 @@ function doPost(e) {
         break;
       }
     }
-    
+
     // 削除リクエストの場合
     if (data.action === 'delete') {
       if (rowIndex !== -1) {
@@ -99,7 +99,7 @@ function doPost(e) {
       output.setContent(JSON.stringify({ success: true }));
       return output;
     }
-    
+
     var rowData = [
       data.date,
       data.startTime,
@@ -108,7 +108,7 @@ function doPost(e) {
       data.content,
       data.formattedText
     ];
-    
+
     if (rowIndex !== -1) {
       // 既存の行を上書き
       sheet.getRange(rowIndex, 1, 1, rowData.length).setValues([rowData]);
@@ -118,52 +118,54 @@ function doPost(e) {
       sheet.appendRow(rowData);
       sendNotification("新規データの保存 (POST)", sheetName + " シートにデータを保存しました:\n" + e.postData.contents);
     }
-    
+
     output.setContent(JSON.stringify({ success: true }));
-  } catch(error) {
+  } catch (error) {
     output.setContent(JSON.stringify({ success: false, error: error.message }));
   }
-  
+
   return output;
 }
 
 function doGet(e) {
   var output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
-  
+
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheets = ss.getSheets();
     var records = [];
-    
+
     // すべてのシートをループしてデータを集める
     for (var s = 0; s < sheets.length; s++) {
       var sheet = sheets[s];
       var data = sheet.getDataRange().getDisplayValues();
-      
+
       // 1行目はヘッダーと仮定して2行目から読み込み
       for (var i = 1; i < data.length; i++) {
         if (!data[i][0]) continue; // 日付が空ならスキップ
-        
+
         // YYYY-MM-DD に統一
         var dateStr = normalizeDateStr(data[i][0]);
-        
+
         records.push({
           date: dateStr,
           startTime: data[i][1],
           endTime: data[i][2],
-          breakTime: data[i][3]
+          breakTime: data[i][3],
+          content: data[i][4],
+          formattedText: data[i][5]
         });
       }
     }
-    
+
     // データの読み込み（同期）があったことを通知
     // sendNotification("データの読み込み (GET/同期)", "アプリからデータ同期のアクセスがありました。");
-    
+
     output.setContent(JSON.stringify({ success: true, records: records }));
-  } catch(error) {
+  } catch (error) {
     output.setContent(JSON.stringify({ success: false, error: error.message }));
   }
-  
+
   return output;
 }
