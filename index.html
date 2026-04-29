@@ -90,9 +90,14 @@
                         <div class="stat-value"><span class="unit">¥</span><span id="total-salary">0</span></div>
                     </div>
                 </div>
-                <button id="sync-btn" class="btn btn-secondary btn-full">
-                    <i class="ph ph-arrows-clockwise"></i> データを同期（再読み込み）
-                </button>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button id="download-csv-btn" class="btn btn-primary btn-full">
+                        <i class="ph ph-download-simple"></i> CSVをダウンロード
+                    </button>
+                    <button id="sync-btn" class="btn btn-secondary btn-full">
+                        <i class="ph ph-arrows-clockwise"></i> データを同期（再読み込み）
+                    </button>
+                </div>
             </section>
         </main>
     </div>

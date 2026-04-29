@@ -274,6 +274,57 @@ function updateSummary() {
     document.getElementById('total-salary').textContent = totalSalary.toLocaleString();
 }
 
+// CSVダウンロード
+function downloadCSV() {
+    const selectedMonth = document.getElementById('summary-month').value; // YYYY-MM
+    if (!selectedMonth) return;
+
+    let csvContent = "ra_name,date,start_time,end_time,break_time,description\n";
+
+    const targetRecords = state.records.filter(r => r.date.startsWith(selectedMonth));
+    targetRecords.sort((a, b) => a.date.localeCompare(b.date));
+
+    if (targetRecords.length === 0) {
+        showToast('対象月のデータがありません');
+        return;
+    }
+
+    targetRecords.forEach(r => {
+        const raName = state.settings.affiliation || "";
+        
+        const dateParts = r.date.split('-');
+        const dateNum = parseInt(dateParts[2], 10);
+        
+        const startTime = (r.startTime || "").replace(':', '');
+        const endTime = (r.endTime || "").replace(':', '');
+        
+        let breakFormatted = 0;
+        if (r.breakTime) {
+            breakFormatted = parseInt(r.breakTime.replace(':', ''), 10) || 0;
+        }
+        
+        let description = r.content || "";
+        if (description.includes(',')) {
+            description = `"${description}"`;
+        }
+
+        csvContent += `${raName}, ${dateNum}, ${startTime}, ${endTime}, ${breakFormatted}, ${description}\n`;
+    });
+
+    // BOM付きにしてExcel等で文字化けしないようにする
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ra_data_${selectedMonth}.csv`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
 // GASから同期
 async function syncFromGAS() {
     if (!state.settings.gasUrl) {
@@ -331,6 +382,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 同期ボタン
     document.getElementById('sync-btn').addEventListener('click', syncFromGAS);
+
+    // CSVダウンロードボタン
+    const downloadCsvBtn = document.getElementById('download-csv-btn');
+    if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', downloadCSV);
+    }
 
     // モーダル制御
     const modal = document.getElementById('settings-modal');
