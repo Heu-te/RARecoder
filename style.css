@@ -10,17 +10,17 @@
     --border-color: rgba(0, 0, 0, 0.08);
     --success: hsl(150, 70%, 40%);
     --danger: hsl(350, 70%, 50%);
-    
+
     /* Layout */
-    --radius-lg: 12px;
-    --radius-md: 8px;
-    --spacing-sm: 6px;
-    --spacing-md: 12px;
-    --spacing-lg: 16px;
-    --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
-    --shadow-lg: 0 12px 24px rgba(0,0,0,0.08);
-    
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.08);
+
     /* Typography */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -32,8 +32,8 @@
         --text-main: hsl(220, 10%, 95%);
         --text-muted: hsl(220, 10%, 70%);
         --border-color: rgba(255, 255, 255, 0.1);
-        --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
-        --shadow-md: 0 8px 24px rgba(0,0,0,0.3);
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
         --primary: hsl(var(--primary-hue), 85%, 65%);
         --primary-hover: hsl(var(--primary-hue), 85%, 75%);
     }
@@ -60,7 +60,7 @@ body {
 .app-container {
     width: 100%;
     max-width: 500px;
-    padding: var(--spacing-md) var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
     margin: 0 auto;
 }
 
@@ -69,7 +69,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
 }
 
 .logo {
@@ -79,12 +79,12 @@ body {
 }
 
 .logo i {
-    font-size: 24px;
+    font-size: 28px;
     color: var(--primary);
 }
 
 .logo h1 {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.5px;
 }
@@ -94,7 +94,7 @@ body {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
     box-shadow: var(--shadow-md);
     backdrop-filter: blur(12px);
@@ -103,12 +103,12 @@ body {
 }
 
 .card h2 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     color: var(--text-main);
 }
 
@@ -133,10 +133,10 @@ body {
 
 label {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-muted);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 input {
@@ -147,13 +147,13 @@ input {
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    min-height: 42px;
-    padding: 8px 12px;
+    min-height: 48px;
+    padding: 12px;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     background: transparent;
     color: var(--text-main);
-    font-size: 15px;
+    font-size: 16px;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -183,10 +183,10 @@ input[type="month"]:invalid::-webkit-datetime-edit {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 10px 16px;
+    gap: 8px;
+    padding: 12px 20px;
     border-radius: var(--radius-md);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     border: none;
@@ -234,11 +234,11 @@ input[type="month"]:invalid::-webkit-datetime-edit {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -269,18 +269,18 @@ input[type="month"]:invalid::-webkit-datetime-edit {
 }
 
 .result-text {
-    background-color: rgba(0,0,0,0.03);
-    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: rgba(0, 0, 0, 0.03);
+    padding: var(--spacing-md);
     border-radius: var(--radius-md);
     font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-    font-size: 13px;
+    font-size: 14px;
     word-break: break-all;
     border: 1px solid var(--border-color);
 }
 
 @media (prefers-color-scheme: dark) {
     .result-text {
-        background-color: rgba(255,255,255,0.05);
+        background-color: rgba(255, 255, 255, 0.05);
     }
 }
 
@@ -305,7 +305,7 @@ input[type="month"]:invalid::-webkit-datetime-edit {
 }
 
 .stat-box {
-    background-color: rgba(0,0,0,0.02);
+    background-color: rgba(0, 0, 0, 0.02);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
     display: flex;
@@ -315,7 +315,7 @@ input[type="month"]:invalid::-webkit-datetime-edit {
 
 @media (prefers-color-scheme: dark) {
     .stat-box {
-        background-color: rgba(255,255,255,0.02);
+        background-color: rgba(255, 255, 255, 0.02);
     }
 }
 
@@ -325,13 +325,13 @@ input[type="month"]:invalid::-webkit-datetime-edit {
 }
 
 .stat-label {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-muted);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .stat-value {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--text-main);
     display: flex;
@@ -364,8 +364,9 @@ input[type="month"]:invalid::-webkit-datetime-edit {
     -webkit-backdrop-filter: blur(4px);
     z-index: 100;
     justify-content: center;
-    align-items: flex-end; /* Mobile friendly */
-    
+    align-items: flex-end;
+    /* Mobile friendly */
+
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
@@ -384,7 +385,7 @@ input[type="month"]:invalid::-webkit-datetime-edit {
     margin: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    
+
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -397,12 +398,14 @@ input[type="month"]:invalid::-webkit-datetime-edit {
     .modal {
         align-items: center;
     }
+
     .modal-content {
         border-radius: var(--radius-lg);
         transform: translateY(20px) scale(0.95);
         opacity: 0;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     }
+
     .modal.active .modal-content {
         transform: translateY(0) scale(1);
         opacity: 1;
